@@ -8,56 +8,43 @@ excerpt: "Data Wrangling and Models"
 mathjax: "true"
 ---
 
-# H1 Heading
+These are the plots/models of a marketing campaign on facebook. The data
+includes insights to number of users that registered for the specific
+website and the number of actual regular users of the site.
 
-## H2 Heading
+ <br/>
 
-### H3 Heading
+![the gender plot](/images/unnamed-chunk-1-1.png)<!-- -->
 
-Here's some basic text.
+<br/><br/>
+ 
+![Campaign ID plot](/images/unnamed-chunk-2-1.png)<!-- -->
 
-And here's some *italics*
+<br/><br/>
 
-Here's some **bold** text.
+![Regular Website Users](/images/unnamed-chunk-3-1.png)<!-- -->
 
-What about a [link](https://github.com/dataoptimal)?
+<br/><br/>
 
-Here's a bulleted list:
-* First item
-+ Second item
-- Third item
+![Total by Camp ID](/images/unnamed-chunk-4-1.png)<!-- -->
 
-Here's a numbered list:
-1. First
-2. Second
-3. Third
+<br/><br/>
 
-Python code block:
-```python
-    import numpy as np
+**Stochastic Gradient Boosting Machines - Max Tree Depth 1, Number of Boosting Iterations 300, Shrinkage 0.10**
 
-    def test_function(x, y):
-      z = np.sum(x,y)
-      return z
-```
+![Face Shrinkage](/images/face_shrink.png)<!-- -->
 
-R code block:
-```r
-library(tidyverse)
-df <- read_csv("some_file.csv")
-head(df)
-```
+<br/><br/>
 
-Here's some inline code `x+y`.
+**Reciver Operating Characteristic/Area Under the Curve - ROC/AUC**
 
-Here's an image:
-<img src="{{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg" alt="linearly separable data">
+![Face AUC](/images/face_auc.png)<!-- -->
 
-Here's another image using Kramdown:
-![alt]({{ site.url }}{{ site.baseurl }}/images/perceptron/linsep.jpg)
+<br/><br/>
+<br/><br/>
 
-Here's some math:
 
-$$z=x+y$$
 
-You can also put it inline $$z=x+y$$
+
+
+
