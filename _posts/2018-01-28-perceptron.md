@@ -4,7 +4,7 @@ date: 2020-03-03
 tags: [data wrangling, data science]
 header:
   image: "/images/perceptron/percept.jpg"
-excerpt: "Data Wrangling, Data Science, Messy Data"
+excerpt: "Data Wrangling and Models"
 mathjax: "true"
 ---
 
