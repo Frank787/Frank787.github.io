@@ -8,7 +8,7 @@ excerpt: "Data Wrangling and Models"
 mathjax: "true"
 ---
 
-These are the plots/models of a marketing campaign on facebook. The data
+These are the plots/models of a marketing campaign on Facebook. The data
 includes insights to number of users that registered for the specific
 website and the number of actual regular users of the site.
 
@@ -41,8 +41,6 @@ website and the number of actual regular users of the site.
 ![Face AUC](/images/face_auc.png)<!-- -->
 
 <br/><br/>
-
-![Face PCA](/images/face_pca.html)<!-- -->
 
 <br/><br/>
 <br/><br/>
