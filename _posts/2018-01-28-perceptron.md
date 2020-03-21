@@ -41,6 +41,10 @@ website and the number of actual regular users of the site.
 ![Face AUC](/images/face_auc.png)<!-- -->
 
 <br/><br/>
+
+![Face PCA](/images/face_pca.docx)<!-- -->
+
+<br/><br/>
 <br/><br/>
 
 
