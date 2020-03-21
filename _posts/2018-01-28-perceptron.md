@@ -42,7 +42,7 @@ website and the number of actual regular users of the site.
 
 <br/><br/>
 
-![Face PCA](/images/face_pca.docx)<!-- -->
+![Face PCA](/images/face_PCA.docx)<!-- -->
 
 <br/><br/>
 <br/><br/>
