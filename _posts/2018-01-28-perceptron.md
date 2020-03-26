@@ -45,7 +45,7 @@ website and the number of actual regular users of the site.
 <br/><br/>
 <br/><br/>
 
-   ```{r echo=FALSE}
+```r 
 
 # Number of Website Registrations by Gender
 
