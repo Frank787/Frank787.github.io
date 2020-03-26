@@ -330,16 +330,11 @@ plot(rocCurve,
      print.thres = c(.5, .2),
      print.thres.pch = 16,
      print.thres.cex = 1.2)
-
-
- **Code chunks applicable to visualizations, Cross Validations**
- **and GBM model (Note: Used classification for 0/1 binary evaluation)**
- 
+  
 # This chunk and next chunk append the script chunks to the output file.
 
 labs = knitr::all_labels()
 labs = setdiff(labs, c("setup", "get-labels"))
-
 ```
 
 
