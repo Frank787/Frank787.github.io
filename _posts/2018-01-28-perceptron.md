@@ -45,7 +45,330 @@ website and the number of actual regular users of the site.
 <br/><br/>
 <br/><br/>
 
+```{r echo=FALSE}
 
+# Number of Website Registrations by Gender
+
+gender_total_conversion <- df2 %>% 
+    filter(total_conversion > 0)
+
+# Save the basics of ggplot to a variable.
+
+gb <- ggplot(gender_total_conversion, aes(gender, total_conversion, fill = gender))
+   
+gb + geom_bar(stat = "identity") + 
+     coord_cartesian(xlim = c(0,3), ylim = c(0,1500)) + 
+     labs(title = "Number of Registrations by Gender") +
+     ylab("number of Registrations") +
+     theme_bw() 
+```    
+
+#
+#
+
+```{r echo=FALSE}
+
+tc <- gender_total_conversion 
+  
+# Create a factor so legend and colors and numbers of legend are in sync.
+# Use factor for proper order of Campaign ID.
+
+campaign_id. <- factor(tc$campaign_id, levels = c("916", "936", "1178"),
+                         ordered=FALSE)
+  
+# Save the basics of ggplot to a variable.
+  
+gt <- ggplot(tc, aes(campaign_id, total_conversion, fill = campaign_id.)) 
+        
+gt + geom_col() +
+     coord_cartesian(xlim = c(0,4), ylim = c(0,1150)) + 
+     labs(title = "Number of Registrations by Campaign ID") +
+     ylab("Number of Registrations") +
+     theme_bw() +
+     scale_fill_brewer(palette = "Dark2") +
+     scale_x_discrete(limits=c("916", "936", "1178")) 
+```
+ 
+#
+#
+
+```{r echo=FALSE}
+
+# Visualization of number of users that actually use the website.
+  
+ac <- df2 %>% filter(approved_conversion > 0)
+  
+# Use factor for proper order of Campaign ID.
+  
+campaign_id. <- factor(ac$campaign_id, levels = c("916", "936", "1178"),
+                       ordered = TRUE)
+                        
+# Save the basics of ggplot to a variable.
+  
+gc2 <- ggplot(ac, aes(campaign_id, approved_conversion, fill = campaign_id.)) 
+  
+gc2 + geom_col() + 
+      coord_cartesian(xlim = c(0,4), ylim = c(0,400)) + 
+      labs(title = "Number of Regular Website Users by Campaign ID") +
+      ylab("Number of Users") +
+      scale_fill_brewer(palette = "Dark2") +
+      scale_x_discrete(limits=c("916", "936", "1178")) +
+      theme_bw() 
+```
+  
+#
+#
+
+```{r echo=FALSE}
+
+# Visualization of total number of campaigns by Campaign ID.
+# Use factor for proper order of Campaign ID.
+  
+campaign_id. <- factor(df2$campaign_id, levels = c("916", "936", "1178"),
+                         ordered = TRUE)
+# Save the basics of ggplot to a variable.
+# Use df2 for all rows.
+  
+gb <- ggplot(df2, aes(campaign_id, fill = campaign_id.))
+  
+gb + geom_bar() + 
+     coord_cartesian(xlim = c(0,4), ylim = c(0,500)) + 
+     labs(title = "Total Number of Campaigns by ID") +
+     scale_fill_brewer(palette = "Dark2") +
+     scale_x_discrete(limits=c("916", "936", "1178")) +
+     theme_bw() 
+```
+  
+#
+#
+#
+
+**Linear Regression Cross Validation**
+
+```{r lm_cross_validation, echo=FALSE}
+
+# Linear Regression Cross Validation
+
+set.seed(123)
+model <- train(approved_conversion ~ campaign_id + total_conversion + impressions + clicks + spent, data=df2,
+               method = "lm",
+               trControl = trainControl(
+                 method = "cv",
+                 number = 3,
+                 summaryFunction=defaultSummary,
+                 verboseIter = FALSE))
+                  
+print(model)
+```
+
+#
+
+**Random Forest Cross Validation**
+
+```{r rf_cross_validation, echo=FALSE}
+
+# Random Forest Cross Validation
+
+set.seed(123)
+modela <- train(approved_conversion ~ campaign_id + total_conversion + impressions + clicks + spent, data=df2,
+                method = "rf",
+                tuneLength = 5,
+                ntree = 1000,
+                importance = TRUE,
+                trControl = trainControl(
+                  method = "cv",
+                  number = 10,
+                  verboseIter = FALSE))
+
+print(modela)
+``` 
+ 
+#
+#
+ **Stochastic Gradient Boosting Model**
+ 
+```{r gbm_model, echo=FALSE}
+
+# Script: face_GBM.R
+# Project: facebook
+# Date: 2/27/2020
+# version: 3.6.0
+# Author: Frank Mroczek
+#
+# Stochastic Gradient Boosting Model
+
+library(tidyverse)
+library(caret)
+library(gbm)
+library(pROC)
+library(doParallel)        # For parallel processing)
+cl <- makePSOCKcluster(5)  # 5 cores on machine
+registerDoParallel(cl)     # all susequent models are now run in parallel
+showConnections()          # shows the clusters on machine
+
+# Read the csv file
+
+df1 <- read_csv("C:/Users/fmroc/documents/data/facebook_data.csv")
+
+# Copy df1 indiscernible data rows to df3 and exclude cols
+
+df3 <- df1[c(1:761), c(4, 6:15)]
+
+
+##########################
+
+# Transform/wrangle data
+
+df3$campaign_id <- as.numeric(df3$campaign_id)
+
+df3$age[df3$age == "30-34"] <- "3034"
+df3$age[df3$age == "35-39"] <- "3539"
+df3$age[df3$age == "40-44"] <- "4044"
+df3$age[df3$age == "45-49"] <- "4549"
+df3$age <- as.numeric(df3$age)
+
+df3$gender <- ifelse(df3$gender == "M", 1, 0) # Male = 1 & Female = 0
+
+# Change the approved conversion to factor cause want to do classification so tweaked
+# the structure. Therefore if approved_conversion >=1 then 1, 0 = 0, want binary 0/1 
+df3$approved_conversion <- ifelse(df3$approved_conversion >= 1, 1, 0)
+df3$approved_conversion <- ifelse(df3$approved_conversion > 0, "yes", "no")
+
+# Have to use ordered factor because don't want confusion matrix and other data such as 
+# positive class will have "no" first and want the "yes" values, Have what your
+# looking for first, ie the event, so had to do this to switch around oth erwise "no" would be first
+df3$approved_conversion <- factor(df3$approved_conversion, levels=c("yes", "no"), ordered=TRUE)
+
+########################
+
+# Data Splitting, a simple stratified random split is used here  
+
+intraining_set <- createDataPartition(df3$approved_conversion,
+                                      p = .70, list = FALSE) # FALSE, don't want a list
+
+df3_train <- df3[intraining_set,]       
+df3_test  <- df3[-intraining_set,] 
+
+# Data Pre-processing Method
+
+numerics <- c("impressions", "clicks", "total_conversion")
+
+# Determine the mean & sd
+proc_values <- preProcess(df3_train[,numerics],
+                          method = c("center", "scale", "YeoJohnson")) 
+                                                         # YeoJohnson is like
+                                                         # Box-Cox but data doesn't have to 
+                                                         # be all positive like Box-Cox
+
+# Use the predicts methods to do the adjustments
+
+train_scaled <- predict(proc_values, df3_train[,numerics])
+test_scaled <-  predict(proc_values, df3_test[, numerics])
+                        
+proc_values
+
+
+###########################
+# GBM Model
+
+# GBM in the gbm_fit function does not accept factor "response" values so we will make a copy
+# & modify the outcome variable 
+# Changing approved_conversion to binary 0/1 to see approved_conversion > 0
+
+for_gbm <- df3_train
+for_gbm$approved_conversion <- ifelse(for_gbm$approved_conversion == "yes", 1, 0)
+
+
+# GBM used to fit the model, then predict.gbm and other functions are used
+# to predict and evaluate the model
+
+gbm_fit <- gbm(formula = approved_conversion ~ ., 
+               distribution = "bernoulli",    
+               data = for_gbm,
+               n.trees = 2000,                    
+               interaction.depth = 7,             
+               shrinkage = 0.01,                 
+               verbose = FALSE)
+
+
+#########################
+# Train
+
+predictors <- names(df3_train)[(names(df3_train) != "approved_conversion")]
+                                                        
+set.seed(15) 
+intraining_set <- createDataPartition(df3$approved_conversion,
+                                      p = .70, list = FALSE) # FALSE returns integers, not a list
+
+df3_train <- df3[intraining_set,]       
+df3_test  <- df3[-intraining_set,] 
+
+# Expanding the Search Grid-dont have to specify there is a default but we specified it
+                                                   
+grid <- expand.grid(interaction.depth = seq(1, 7, by = 2), # tree depth 1-7, 
+                    n.trees = seq(100, 2000, by = 50),     # boosting iterations
+                    shrinkage = c(0.01, 0.10),             # slow & fast learners, how quick adapts
+                    n.minobsinnode=5)                      # min num of observations in tree's
+                                                           # terminal nodes
+
+ctrl <- trainControl(method = "repeatedcv",
+                     repeats = 5,
+                     summaryFunction = twoClassSummary, 
+                     classProbs = TRUE) 
+                    
+ 
+set.seed(15)                     
+gbmTune <- train(approved_conversion ~ ., data = df3_train,
+                  method = "gbm", 
+                  metric = "ROC", 
+                  tuneGrid = grid,
+                  verbose = FALSE,
+                  trControl = ctrl)
+
+# When done:
+
+stopCluster(cl)
+showConnections() # to verify machine returned to normal state
+                  # should say"description class mode text isopen can read can write"
+
+gbmPred <- predict(gbmTune, df3_test)
+str(gbmPred)
+
+# gbmTune is the train object
+# this gives you the data of the predicted class probabilities for test set
+gbmProbs <- predict(gbmTune, df3_test, type = "prob")
+str(gbmProbs)                  
+                                 
+# PRC package code for roc
+rocCurve <- roc(response = df3_test$approved_conversion,
+                predictor = gbmProbs[, "yes"],
+                levels = rev(levels(df3_test$approved_conversion)))
+
+rocCurve
+plot(rocCurve)
+plot(rocCurve,
+     print.thres = c(.5, .2),
+     print.thres.pch = 16,
+     print.thres.cex = 1.2)
+
+```
+ 
+
+
+ **Code chunks applicable to visualizations, Cross Validations**
+ **and GBM model (Note: Used classification for 0/1 binary evaluation)**
+ 
+```{r get-labels, echo=FALSE} 
+
+# This chunk and next chunk append the script chunks to the output file.
+
+labs = knitr::all_labels()
+labs = setdiff(labs, c("setup", "get-labels"))
+```
+
+
+```{r all-code, ref.label=labs, eval=FALSE}
+```
 
 
 
