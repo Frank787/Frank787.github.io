@@ -45,7 +45,7 @@ website and the number of actual regular users of the site.
 <br/><br/>
 <br/><br/>
 
-```{r echo=FALSE}
+   ```{r echo=FALSE}
 
 # Number of Website Registrations by Gender
 
@@ -192,7 +192,7 @@ print(modela)
 # Script: face_GBM.R
 # Project: facebook
 # Date: 2/27/2020
-# version: 3.6.0
+# version: 3.6.3
 # Author: Frank Mroczek
 #
 # Stochastic Gradient Boosting Model
