@@ -45,6 +45,8 @@ website and the number of actual regular users of the site.
 <br/><br/>
 <br/><br/>
 
+Scripts for Plots and Models
+
 ```r 
 
 # Number of Website Registrations by Gender
@@ -61,12 +63,9 @@ gb + geom_bar(stat = "identity") +
      labs(title = "Number of Registrations by Gender") +
      ylab("number of Registrations") +
      theme_bw() 
-```    
-
+  
 #
 #
-
-```{r echo=FALSE}
 
 tc <- gender_total_conversion 
   
@@ -87,12 +86,9 @@ gt + geom_col() +
      theme_bw() +
      scale_fill_brewer(palette = "Dark2") +
      scale_x_discrete(limits=c("916", "936", "1178")) 
-```
  
 #
 #
-
-```{r echo=FALSE}
 
 # Visualization of number of users that actually use the website.
   
@@ -114,12 +110,9 @@ gc2 + geom_col() +
       scale_fill_brewer(palette = "Dark2") +
       scale_x_discrete(limits=c("916", "936", "1178")) +
       theme_bw() 
-```
   
 #
 #
-
-```{r echo=FALSE}
 
 # Visualization of total number of campaigns by Campaign ID.
 # Use factor for proper order of Campaign ID.
@@ -137,17 +130,12 @@ gb + geom_bar() +
      scale_fill_brewer(palette = "Dark2") +
      scale_x_discrete(limits=c("916", "936", "1178")) +
      theme_bw() 
-```
   
 #
 #
 #
 
 **Linear Regression Cross Validation**
-
-```{r lm_cross_validation, echo=FALSE}
-
-# Linear Regression Cross Validation
 
 set.seed(123)
 model <- train(approved_conversion ~ campaign_id + total_conversion + impressions + clicks + spent, data=df2,
@@ -159,15 +147,10 @@ model <- train(approved_conversion ~ campaign_id + total_conversion + impression
                  verboseIter = FALSE))
                   
 print(model)
-```
 
 #
 
 **Random Forest Cross Validation**
-
-```{r rf_cross_validation, echo=FALSE}
-
-# Random Forest Cross Validation
 
 set.seed(123)
 modela <- train(approved_conversion ~ campaign_id + total_conversion + impressions + clicks + spent, data=df2,
@@ -181,14 +164,11 @@ modela <- train(approved_conversion ~ campaign_id + total_conversion + impressio
                   verboseIter = FALSE))
 
 print(modela)
-``` 
- 
+
 #
 #
  **Stochastic Gradient Boosting Model**
  
-```{r gbm_model, echo=FALSE}
-
 # Script: face_GBM.R
 # Project: facebook
 # Date: 2/27/2020
@@ -351,23 +331,15 @@ plot(rocCurve,
      print.thres.pch = 16,
      print.thres.cex = 1.2)
 
-```
- 
-
 
  **Code chunks applicable to visualizations, Cross Validations**
  **and GBM model (Note: Used classification for 0/1 binary evaluation)**
  
-```{r get-labels, echo=FALSE} 
-
 # This chunk and next chunk append the script chunks to the output file.
 
 labs = knitr::all_labels()
 labs = setdiff(labs, c("setup", "get-labels"))
-```
 
-
-```{r all-code, ref.label=labs, eval=FALSE}
 ```
 
 
