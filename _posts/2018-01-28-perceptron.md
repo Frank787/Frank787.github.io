@@ -331,7 +331,7 @@ plot(rocCurve,
      print.thres.pch = 16,
      print.thres.cex = 1.2)
   
-# This chunk and next chunk append the script chunks to the output file.
+# This chunk appends the script chunks to the output file.
 
 labs = knitr::all_labels()
 labs = setdiff(labs, c("setup", "get-labels"))
