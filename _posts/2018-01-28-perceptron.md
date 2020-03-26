@@ -3,8 +3,8 @@ title: "Facebook Marketing Project"
 date: 2020-03-03
 tags: [data wrangling, data science]
 header:
-  image: "/images/perceptron/percept.jpg"
-excerpt: "Data Wrangling and Models"
+  image: "/images/unnamed-chunk-1-1.png/"
+excerpt: "Data Wrangling, Plots and Models"
 mathjax: "true"
 ---
 
