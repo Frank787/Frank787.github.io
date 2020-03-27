@@ -42,6 +42,8 @@ website and the number of actual regular users of the site.
 
 <br/><br/>
 
+{% include PCA-Facebook-Report %}
+
 <br/><br/>
 <br/><br/>
 
