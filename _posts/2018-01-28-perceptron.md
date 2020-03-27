@@ -42,7 +42,7 @@ website and the number of actual regular users of the site.
 
 <br/><br/>
 
-{% include PCA-Facebook-Report %}
+{% include PCA-Facebook-Report.html %}
 
 <br/><br/>
 <br/><br/>
