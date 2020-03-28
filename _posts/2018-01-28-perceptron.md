@@ -47,7 +47,7 @@ website and the number of actual regular users of the site.
 <br/><br/>
 <br/><br/>
 
-Scripts for Plots and Models
+**Scripts for Plots and Models**
 
 ```r 
 
