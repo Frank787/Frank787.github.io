@@ -86,7 +86,7 @@ analytics:
 author:
   name             : "Frank Mroczek"
   avatar           : "/images/flower_house.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Data Science Portfolio"
+  bio              : "Projects Portfolio"
   location         : "New York"
   email            :
   uri              :
